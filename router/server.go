@@ -35,8 +35,15 @@ func (s *HTTPServer) Start(ctx context.Context, timeoutSec int) error {
 	// Start the server.
 	srvErr := make(chan error)
 	go func() {
-		s.Logger.Printf("http server listening on %s\n", httpServer.Addr)
-		err := httpServer.ListenAndServeTLS(s.Config.TLSCertFile, s.Config.TLSKeyFile)
+		var err error
+		if s.Config.TLSCertFile != "" && s.Config.TLSKeyFile != "" {
+			s.Logger.Printf("starting HTTPS server with TLS")
+			err = httpServer.ListenAndServeTLS(s.Config.TLSCertFile, s.Config.TLSKeyFile)
+		} else {
+			s.Logger.Printf("starting HTTP server (no TLS)")
+			err = httpServer.ListenAndServe()
+		}
+
 		if err != nil {
 			if err == http.ErrServerClosed {
 				s.Logger.Printf("server closed")
@@ -47,6 +54,7 @@ func (s *HTTPServer) Start(ctx context.Context, timeoutSec int) error {
 			}
 		}
 	}()
+	s.Logger.Printf("http server listening on %s\n", httpServer.Addr)
 
 	// Create a wait group to handle a graceful shutdown.
 	var wg sync.WaitGroup
