@@ -1,0 +1,21 @@
+- jobs:
+    - blackbox_icmp
+    - blackbox_ssh
+    - node_exporter
+  labels:
+    environment: prod
+    application: webapp
+  targets:
+    - atlwebapp01
+    - atlwebapp02
+    - atlwebapp03
+- jobs:
+    - blackbox_http
+  labels:
+    environment: prod
+    application: webapp
+  targets:
+    - https://webapp.example.com:443
+    - http://atlwebapp01.internal.com:8080
+    - http://atlwebapp02.internal.com:8080
+    - http://atlwebapp03.internal.com:8080

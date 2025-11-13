@@ -1,0 +1,24 @@
+# Targets source file or directory to look for source files in.
+# If sources is a dir pim will look from *_targets.{yml yaml json}.
+sources: /tmp/pim/sources
+
+# targets_dir specifies the destination directory where the individual files will be created.
+targets_dir: /tmp/pim/targets
+
+# Used to determine target file names. If the job name is node-exporter the default seetings would
+# produce a targets file named node-exporter_targets.json.
+# These are the default values.
+#targets_file_suffix: "_targets"
+#targets_file_ext: ".json"
+
+# Might create the following target files.
+#   blackbox_icmp_targets.json
+#   blackbox_http_targets.json
+#   blackbox_icmp_targets.json
+target_split:
+  - job
+
+http_api_host: 172.19.120.11
+http_api_port: 8080
+#http_tls_cert_file: ""
+#http_tls_key_file: ""
