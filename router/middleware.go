@@ -84,7 +84,7 @@ func remoteAddr(r *http.Request) string {
 }
 
 func LoggerMiddleware(logger *core.Logger) Middleware {
-	accessLogger := core.NewLogger(logger.Writer(), "cuttle-access: ", 0, false)
+	accessLogger := core.NewLogger(logger.Writer(), "access: ", 0, false)
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(
 			func(w http.ResponseWriter, r *http.Request) {
