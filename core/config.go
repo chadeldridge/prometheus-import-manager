@@ -124,16 +124,13 @@ func NewConfig(
 	}
 
 	if v, ok := flags["debug"]; ok {
+		logger.DebugMode = true
+		logger.Debug("Debug: on")
 		c.setConfigValue("debug", v)
 	}
 
-	/*
-		if v, ok := flags["command"]; ok {
-			command = v
-		}
-	*/
-
 	// Read in the config file. If no config is found, continue with the default values.
+	logger.Debugf("parsing config file: %s", c.ConfigFile)
 	if err := c.parseConfigFile(c.ConfigFile); err != nil {
 		if !errors.Is(err, os.ErrNotExist) {
 			return c, err
@@ -146,7 +143,9 @@ func NewConfig(
 
 	// Try to find each supported variable passed in by flags or env. If found, overwrite the
 	// value in config.
+	logger.Debug("updating settings from flags and environment variables")
 	for k, v := range flags {
+		logger.Debugf("setting config value: %s=%s", k, v)
 		err := c.setConfigValue(k, v)
 		if err != nil {
 			return c, err
