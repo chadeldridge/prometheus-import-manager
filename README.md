@@ -15,20 +15,24 @@ targets_dir: /etc/prometheus/file_sd
 # These are the default values.
 #targets_file_suffix: "_targets"
 #targets_file_ext: ".json"
-
 # Might create the following target files.
 #   blackbox_icmp_targets.json
 #   blackbox_http_targets.json
 #   blackbox_icmp_targets.json
-target_split:
-  - job
+
+# http_api_host specifies the ip to bind to. Default 0.0.0.0
+http_api_host: 172.19.120.11
+# http_api_port specifies the port to bind to. Default 9900
+http_api_port: 8080
+#http_tls_cert_file: ""
+#http_tls_key_file: ""
+http_shutdown_timeout: 5
 ```
 
 Read in target configs (yml or json).
 NOTE: I'm only able to combine node_exporter with blackbox in the same group because my node_exporter job configuration adds the port automatically.
 /etc/pim/sources/targets.yml # Has a list with grouped targets, jobs, and labels.
 ```
-target_groups:
 - jobs:
     - blackbox_icmp
     - blackbox_ssh
