@@ -155,7 +155,6 @@ func export(logger *core.Logger, config *core.Config) error {
 
 // run allows us to setup and implement in testing and production.
 func run(ctx context.Context, logger *core.Logger, config *core.Config) error {
-	logger.PrintOut(config)
 	// Setup the HTTP server.
 	srv := router.NewHTTPServer(logger, config)
 	// Add routes and do anything else we need to do before starting the server.
