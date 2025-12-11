@@ -19,9 +19,15 @@ type TargetGroup struct {
 	Targets []string          `json:"targets,omitempty" yaml:"targets,omitempty"`
 }
 
+type ExportGroup struct {
+	Labels  map[string]string `json:"labels,omitempty" yaml:"labels,omitempty"`
+	Targets []string          `json:"targets,omitempty" yaml:"targets,omitempty"`
+}
+
 type (
 	TargetGroups []*TargetGroup
-	TargetMap    map[string]TargetGroups
+	ExportGroups []*ExportGroup
+	TargetMap    map[string]ExportGroups
 )
 
 // NewTargetGroup creates a new TargetGroup with initialized fields.
@@ -157,11 +163,11 @@ func (t TargetGroups) splitByJob(config *core.Config) TargetMap {
 		for _, job := range tg.Jobs {
 			filename := job + core.DefaultTargetsFileSuffix + config.TargetsFileExt
 			if files[filename] == nil {
-				files[filename] = make(TargetGroups, 0)
+				files[filename] = make(ExportGroups, 0)
 			}
 
-			files[filename] = append(files[filename], &TargetGroup{
-				Jobs:    []string{job},
+			tg.Labels["job"] = job
+			files[filename] = append(files[filename], &ExportGroup{
 				Labels:  tg.Labels,
 				Targets: tg.Targets,
 			})
